@@ -77,6 +77,7 @@ property of a input `msg` object:
 + **stop_forward**: this will stop the node from forwarding any audio buffers to its second output
 + **listen**: this acts as a combination of **stop_pause** and **stop_forward**
 + **stop**: this will force stop the precise-engine (can be used to restart the node if audio input is not stopped)
+
 ## Other Usefull Information
 ### Training Your Own Model
 You can train your own model with a precise source install.
