@@ -19,7 +19,8 @@ You dont need to pip install the python wrapper as the node directly wraps the b
 
 Which option you choose largely depends on which wake-word model you want to run. The engine can only run models that were trained on the same or older version
 as the engine itself. If you want to train your own models you will most likely have to opt for the source install as this way you can choose the same branch that was used for training.
-## Basic Usage
+## Usage
+### Basic Usage
 To use the node in a first step you will have to create a new configuration. This configuration represents the precise-engine and you will have to enter the 
 absolut path to the engine binary in it. If you choose the binary install this will be `.../precise-engine/precise-engine` relative to the path that you unpacked
 the binary in. If you choose the source install it will be `.../mycroft-precise/.venv/bin/precise-engine` relative to your choosen cloning destination.
@@ -55,7 +56,7 @@ When it detects the wake-word it will send a message to its first output that ha
 
 To stop the node stop the stream of raw audio buffers and the node will automatically stop.
 
-## Settings
+### Settings
 + Engine: choose a configuration which represents the path to the precise-engine binary
 + Model Path: enter the path to the model file (*.pb*) you want to use
 + Threshold: adjust the threshold above which a detection occurs. The lower the threshold the higher the sensitivity but also the higher the likelihood of false
@@ -67,7 +68,7 @@ positives. Adjust to find a balance.
 + Control property: the `msg` property the node listens on for control messages
 + Name: the label to be shown in the editor
 
-## Control Messages
+### Control Messages
 The node supports several control messages to control its behaviour at runtime. These messages need to be sent as a *string* in the configured control
 property of a input `msg` object:
 + **pause**: this will pause detection
@@ -76,8 +77,8 @@ property of a input `msg` object:
 + **stop_forward**: this will stop the node from forwarding any audio buffers to its second output
 + **listen**: this acts as a combination of **stop_pause** and **stop_forward**
 + **stop**: this will force stop the precise-engine (can be used to restart the node if audio input is not stopped)
-
-## Training Your Own Model
+## Other Usefull Information
+### Training Your Own Model
 You can train your own model with a precise source install.
 be warned this process is quite involved. Here are some links that might help you:
 + https://github.com/MycroftAI/mycroft-precise/wiki/Training-your-own-wake-word#how-to-train-your-own-wake-word
@@ -85,9 +86,9 @@ be warned this process is quite involved. Here are some links that might help yo
 + https://community.rhasspy.org/t/mycroft-precise-installation-and-use/628
 + https://github.com/MycroftAI/mycroft-precise/issues/113
 
-## Alternatives
+### Alternatives
 If you are looking for an alternative to quickly use personal wake-words without the training process have a look at [node-red-contrib-personal-wake-word](https://github.com/johanneskropf/node-red-contrib-personal-wake-word).
 This will give you an easy start but will of course not work as a universal wake-word for differnt speakers and will be less noise resistant as it uses a much more simplistic approach.
 
-## Constraints
+### Constraints
 Precise right now only runs on Linux distributions and on hardware thats at least as fast as the Raspberry Pi 3a+.
