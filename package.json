@@ -1,0 +1,25 @@
+{
+  "name": "node-red-contrib-precise-wakeword",
+  "version": "0.0.1",
+  "description": "a node-red integration of the precise wakeword listener",
+  "author": "Johannes Kropf",
+  "license": "Apache-2.0",
+  
+  "keywords": [
+    "wake-word",
+    "kws",
+    "wakeword",
+    "nodered",
+    "node-red"
+  ],
+  "repository": {
+        "type": "git",
+        "url": "https://github.com/johanneskropf/node-red-contrib-precise-wakeword.git"
+  },
+  "node-red": {
+        "nodes": {
+            "precise-wake": "precise-wake.js",
+            "precise-wake_config":"precise-wake_config.js"
+        }
+    }
+}
