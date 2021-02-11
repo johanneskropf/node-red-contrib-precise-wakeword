@@ -36,6 +36,8 @@ module.exports = function(RED) {
         this.pauseListening = false;
         this.statusTimer = false;
         this.inputTimeout = false;
+        this.initialTimeout = false;
+        this.initialTimeoutTimer = false;
         this.errorStop = false;
         this.preciseConfig = RED.nodes.getNode(config.preciseEngine);
         this.modelName = "";
@@ -176,6 +178,20 @@ module.exports = function(RED) {
             }, 2000);
         }
         
+        function initialTimeoutFunction() {
+            
+            node.initialTimeout = true;
+            if (node.initialTimeoutTimer) {
+                clearTimeout(node.initialTimeoutTimer);
+                node.initialTimeoutTimer = false;
+            }
+            node.initialTimeoutTimer = setTimeout(() => {
+                node.initialTimeout = false;
+                node.initialTimeoutTimer = false;
+            }, 2000);
+            
+        }
+        
         node.enginePath = node.preciseConfig.enginePath;
         if (!fs.existsSync(node.enginePath)) {
             node.errorStop = true;
@@ -193,6 +209,8 @@ module.exports = function(RED) {
         }
         node.modelName = node.modelPath.split("/").pop().replace(/\.pb/g, "");
         
+        initialTimeoutFunction();
+        
         this.on('input', function(msg, send, done) {
             
             if (node.errorStop) {
@@ -208,6 +226,7 @@ module.exports = function(RED) {
                     
                     if(node.wakeWord){
                         node.wakeWord.kill();
+                        initialTimeoutFunction();
                         node_status(["stopped","grey","dot"],1500);
                     } else {
                         node.warn("not started yet");
@@ -296,7 +315,7 @@ module.exports = function(RED) {
                 default:
                     if (Buffer.isBuffer(input)) {
                         if(node.forwardNow) { node.send([null,msg]) }
-                        if (!node.wakeWord) {
+                        if (!node.wakeWord && !node.initialTimeout) {
                             node.chunkSize = input.length;
                             spawnWake();
                         } else {
