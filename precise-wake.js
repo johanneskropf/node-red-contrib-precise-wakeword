@@ -27,6 +27,8 @@ module.exports = function(RED) {
         this.chunkSize = 4096;
         this.triggerLength = Number(config.window);
         this.triggerThreshold = Number(config.threshold);
+        this.avg = 0;
+        this.minActive = Number(config.minActive);
         this.passthrough = config.passthrough;
         this.inputProp = config.inputProp;
         this.outputProp = config.outputProp;
@@ -72,16 +74,18 @@ module.exports = function(RED) {
             }
         }
         
-        function aboveThreshold (value) {
-            return (value > node.triggerThreshold) ? true : false;
-        }
-        
         function rollingThreshold (input) {
             node.outputArr.push(input);
             if (node.outputArr.length > node.triggerLength) {
                 node.outputArr.shift();
             }
-            const triggered = node.outputArr.every(aboveThreshold);
+            let count = 0;
+            let triggered = false;
+            node.outputArr.forEach(number => {
+                if (number >= node.triggerThreshold) { count += 1; }
+            });
+            node.avg = node.outputArr.reduce((previous, current) => current += previous) / node.triggerLength;
+            triggered = (node.avg >= node.triggerThreshold && count >= node.minActive) ? true : false;
             if (triggered && node.outputArr.length === node.triggerLength) {
                 if (!node.pauseListening && node.passthrough) {
                     node.pauseListening = true;
@@ -91,12 +95,11 @@ module.exports = function(RED) {
                     return;
                 }
                 let msg = {};
-                const avg = node.outputArr.reduce((previous, current) => current += previous) / node.outputArr.length;
                 node.outputArr = [];
                 const detection = {
                     keyword: node.modelName,
                     timestamp: Date.now(),
-                    score: avg,
+                    score: node.avg,
                     threshold: node.triggerThreshold
                 };
                 msg[node.outputProp] = detection

@@ -19,7 +19,8 @@
             preciseEngine: {value:"", type:"precise-wake_config"},
             modelPath: {value:"", required: true},
             threshold: {value: 0.5},
-            window: {value:6, required: true},
+            minActive: {value: 6, required: true},
+            window: {value: 8, required: true},
             passthrough: {value:false},
             inputProp: {value:"payload"},
             outputProp: {value:"payload"},
@@ -81,9 +82,13 @@
         <label for="node-input-threshold" id="thresholdValue" style="text-align:center;"></label>
     </div>
     <div class="form-row">
+            <label for="node-input-minActive"><i class="fa fa-arrows-v"></i> Min Above</label>
+            <input type="number" id="node-input-minActive" value="6" />
+    </div>
+    <div class="form-row">
             <label for="node-input-window"><i class="fa fa-arrows-h"></i> Window Size</label>
-            <input type="number" id="node-input-window" value="6" />
-        </div>
+            <input type="number" id="node-input-window" value="8" />
+    </div>
     <div class="form-row">
         <label for="node-input-passthrough"><i class="fa fa-mail-forward"></i> Passthrough</label>
         <input type="checkbox" id="node-input-passthrough" style="display:inline-block; width: auto; vertical-align:baseline;" value="false">
