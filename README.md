@@ -61,7 +61,12 @@ To stop the node stop the stream of raw audio buffers and the node will automati
 + Model Path: enter the path to the model file (*.pb*) you want to use
 + Threshold: adjust the threshold above which a detection occurs. The lower the threshold the higher the sensitivity but also the higher the likelihood of false
 positives. Adjust to find a balance.
-+ Window Size: the number of audio frames that have to be above the threshold to count as a positive activation. This parameter works in conjunction with the threshold. If you encounter to many false positives even when adjusting the threshold you might want to increase the window size or vice versa.
++ Min Above: the minimum number of frames within a window that have to be above the threshold to count as an activation.
+This value can't be bigger than the window size as otherwise you will never get a positive activation.
+(if you experience double activations you can increase the min activations to be closer or equal to the window size or increase the window size or both)
++ Window Size: the number of audio frames that are used as a window for the rolling average to look for a positive activation. 
+This parameter works in conjunction with the threshold & the minimum activations number. 
+If you encounter to many false positives even when adjusting the threshold you might want to increase the window size or vice versa.
 + Passthrough: if selected the node will pause further detection after a positive match and start to automatically forward the audio buffers from its input. 
 + Input Property: the `msg` property the node listen on for the audio stream.
 + Output Property: the `msg` property the node sends the message on a positive match on
